@@ -1,0 +1,6 @@
+1. Start project - skaffold dev
+   project will run on post.com which we put in /etc/hosts and ingress-srv
+2. Stop project - skaffold delete
+3. Rebuild image - skaffold build --no-cache
+4. Stripe for payments. Link: https://dashboard.stripe.com/. Environmental variable. Webhooks launch stripe go
+   to Downloads. Launch ./stripe listen --forward-to http://posts.com/api/payments/webhook

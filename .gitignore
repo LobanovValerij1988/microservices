@@ -1,0 +1,4 @@
+node_modules
+common
+
+infra/K8s/*secret*.yaml

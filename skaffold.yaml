@@ -1,0 +1,57 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+manifests:
+  rawYaml:
+    - ./infra/K8s/* # Include all Kubernetes manifests from the infra/K8s directory and apply them when some changes are detected
+build:
+  local:
+    push: false # Push images to the registry
+  artifacts:
+    - image: ukrainiansoldier/auth # Image name for the React app
+      context: ./auth # Context directory for the React app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts" # Sync all ts files in the auth/src directory
+            dest: . # Destination path in the container
+    - image: ukrainiansoldier/client # Image name for the Next.js app
+      context: ./client # Context directory for the Next.js app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js" # Sync all js files in the client/pages directory
+            dest: . # Destination path in the container
+    - image: ukrainiansoldier/tickets # Image name for the tickets app
+      context: ./tickets # Context directory for the tickets app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts" # Sync all ts files in the tickets/src directory
+            dest: . # Destination path in the container
+    - image: ukrainiansoldier/orders # Image name for the orders app
+      context: ./orders # Context directory for the orders app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts" # Sync all ts files in the orders/src directory
+            dest: . # Destination path in the container
+    - image: ukrainiansoldier/expiration # Image name for the payments app
+      context: ./expiration # Context directory for the payments app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts" # Sync all ts files in the expiration/src directory
+            dest: . # Destination path in the container
+    - image: ukrainiansoldier/payments # Image name for the payments app
+      context: ./payments # Context directory for the payments app
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts" # Sync all ts files in the payments/src directory
+            dest: . # Destination path in the container

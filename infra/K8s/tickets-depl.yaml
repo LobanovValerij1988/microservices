@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tickets-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tickets
+  template:
+    metadata:
+      labels:
+        app: tickets
+    spec:
+      containers:
+        - name: tickets-container
+          image: ukrainiansoldier/tickets
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # Use the pod name as a unique client ID
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt_key
+            - name: MONGO_URI
+              value: "mongodb://tickets-mongo-service:27017/tickets"
+            - name: NATS_URL
+              value: "nats://nats-service:4222"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tickets-service
+spec:
+  selector:
+    app: tickets
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP

@@ -1,0 +1,1 @@
+kubectl port-forward name of pods 4222:4222 // make nats accesible from outside

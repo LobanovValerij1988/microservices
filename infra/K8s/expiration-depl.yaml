@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expiration-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: expiration
+  template:
+    metadata:
+      labels:
+        app: expiration
+    spec:
+      containers:
+        - name: expiration-container
+          image: ukrainiansoldier/expiration
+          env:
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name # Use the pod name as a unique client ID
+            - name: NATS_URL
+              value: "nats://nats-service:4222"
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: REDIS_HOST
+              value: "expiration-redis-service"
