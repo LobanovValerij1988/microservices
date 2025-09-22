@@ -5,7 +5,8 @@
   "scripts": {
     "start": "ts-node-dev src/index.ts",
     "test": "jest --watchAll --no-cache",
-    "updateLibrary": " npm update --save @ticketsproj/services"
+    "updateLibrary": " npm update --save @ticketsproj/services",
+    "test:ci": "jest"
   },
   "jest": {
     "preset": "ts-jest",
