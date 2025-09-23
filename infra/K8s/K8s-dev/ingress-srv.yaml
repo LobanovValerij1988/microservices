@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1 # This file defines an Ingress resource for the posts service So we can get resources from outside world. We need to do initially "minikube addons enable ingress"
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx # This specifies that we are using the nginx ingress controller
+    nginx.ingress.kubernetes.io/use-regex: "true" # This allows us to use regex in paths
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: posts.com # our domain name we can use minikube ip instead
+      http:
+        paths:
+          - path: /api/users/?(.*) # This path will match /api/users and /api/users/anything
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 3000
+          - path: /api/tickets/?(.*) # This path will match /api/tickets
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: tickets-service
+                port:
+                  number: 3000
+          - path: /api/orders/?(.*) # This path will match /api/orders
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: orders-service
+                port:
+                  number: 3000
+          - path: /api/payments/?(.*) # This path will match /api/payments
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: payments-service
+                port:
+                  number: 3000
+          - path: /?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: client-service
+                port:
+                  number: 3000

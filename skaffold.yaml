@@ -3,6 +3,7 @@ kind: Config
 manifests:
   rawYaml:
     - ./infra/K8s/* # Include all Kubernetes manifests from the infra/K8s directory and apply them when some changes are detected
+    - ./infra/K8s-dev/* # Include all Kubernetes manifests from the infra/K8s-dev directory and apply them when some changes are detected
 build:
   local:
     push: false # Push images to the registry
